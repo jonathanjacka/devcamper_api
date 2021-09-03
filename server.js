@@ -24,9 +24,15 @@ app.use('/api/v1/bootcamps/', bootcampRoutes);
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(
+const server = app.listen(
   PORT,
   console.log(
     `Server is running in ${process.env.NODE_ENV} mode on port ${PORT}: Hello there`
   )
 );
+
+//Global handle for unhandled promise rejections
+process.on('unhandledRejection', (error, promise) => {
+  console.log(`Error: ${error.message}`);
+  server.close(() => process.exit(1));
+});
