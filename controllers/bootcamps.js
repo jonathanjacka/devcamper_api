@@ -14,6 +14,8 @@ exports.getBootcamp = (req, res, next) => {
     .send({ success: true, msg: `Show bootcamp: ${req.params.id}` });
 };
 
+const Bootcamp = require('../models/Bootcamp');
+
 //@desc     Create new bootcamp
 //@route    POST /api/v1/bootcamps
 //@access   Private
