@@ -17,14 +17,4 @@ router
   .put(updateBootcamp)
   .delete(deleteBootcamp);
 
-// router.get('/', getBootcamps);
-
-// router.get('/:id', getBootcamp);
-
-// router.post('/', createBootcamp);
-
-// router.put('/:id', updateBootcamp);
-
-// router.delete('/:id', deleteBootcamp);
-
 module.exports = router;
