@@ -9,8 +9,24 @@ const errorHandler = (err, req, res, next) => {
 
   //Mongoose bad ObjectID
   if (err.name === 'CastError') {
-    const message = `Resource with the ID of ${err.value} not found.`;
+    const message = `Resource with the ID of ${err.value} not found: this means the ID you entered is incorrect or doesn't exist.`;
     error = new ErrorResponse(message, 404);
+  }
+
+  //Mongoose duplicate key
+  if (err.code === 11000) {
+    const message = `Duplicate field value entered - you tried to submit a value that already exists in another resource.`;
+    error = new ErrorResponse(message, 400);
+  }
+
+  //Mongoose validation error
+  if (err.name === 'ValidationError') {
+    const message =
+      'You are missing required values from your resource:' +
+      Object.values(err.errors).map(
+        (value) => ' ' + value.message.toLowerCase()
+      );
+    error = new ErrorResponse(message, 400);
   }
 
   res
