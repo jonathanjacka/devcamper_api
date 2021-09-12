@@ -81,8 +81,6 @@ exports.addCourse = asyncHandler(async (req, res, next) => {
 //@route    PUT /api/v1/courses/:id
 //@access   Private
 exports.updateCourse = asyncHandler(async (req, res, next) => {
-  req.body.bootcamp = req.params.id;
-
   let course = await Course.findById(req.params.id);
 
   if (!course) {
@@ -98,6 +96,29 @@ exports.updateCourse = asyncHandler(async (req, res, next) => {
     new: true,
     runValidators: true,
   });
+
+  res.status(200).json({
+    success: true,
+    data: course,
+  });
+});
+
+//@desc     Delete/Remove a single course
+//@route    DELETE /api/v1/courses/:id
+//@access   Private
+exports.deleteCourse = asyncHandler(async (req, res, next) => {
+  const course = await Course.findById(req.params.id);
+
+  if (!course) {
+    return next(
+      new ErrorResponse(
+        `No course with the id of ${req.params.id} was found - this means that the course doesn't exist or that the ID you entered is incorrect`,
+        404
+      )
+    );
+  }
+
+  await course.remove();
 
   res.status(200).json({
     success: true,
