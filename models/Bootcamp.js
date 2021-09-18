@@ -99,7 +99,7 @@ const BootcampSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
-    /* TODO: ADD USER */
+
     user: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
