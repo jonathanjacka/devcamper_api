@@ -51,9 +51,15 @@ ReviewSchema.statics.getAverageRating = async function (bootcampId) {
   ]);
 
   try {
-    await this.model('Bootcamp').findByIdAndUpdate(bootcampId, {
-      averageRating: obj[0].averageRating,
-    });
+    if (obj[0]) {
+      await this.model('Bootcamp').findByIdAndUpdate(bootcampId, {
+        averageRating: Math.round(obj[0].averageRating),
+      });
+    } else {
+      await this.model('Bootcamp').findByIdAndUpdate(bootcampId, {
+        $unset: { averageRating: 1 },
+      });
+    }
   } catch (error) {
     console.log(`Error determining average rating of bootcamp: ${error}`);
   }
@@ -65,7 +71,7 @@ ReviewSchema.post('save', async function () {
 });
 
 //call getAverageRating before remove
-ReviewSchema.pre('remove', async function () {
+ReviewSchema.post('remove', async function () {
   await this.constructor.getAverageRating(this.bootcamp);
 });
 

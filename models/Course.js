@@ -64,7 +64,7 @@ CourseSchema.statics.getAverageCost = async function (bootcampId) {
       });
     } else {
       await this.model('Bootcamp').findByIdAndUpdate(bootcampId, {
-        averageCost: undefined,
+        $unset: { averageCost: 1 },
       });
     }
   } catch (error) {
@@ -77,8 +77,8 @@ CourseSchema.post('save', async function () {
   await this.constructor.getAverageCost(this.bootcamp);
 });
 
-//call getAverageCost before remove
-CourseSchema.pre('remove', async function () {
+//call getAverageCost after remove
+CourseSchema.post('remove', async function () {
   await this.constructor.getAverageCost(this.bootcamp);
 });
 

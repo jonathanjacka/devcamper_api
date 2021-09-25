@@ -35,7 +35,7 @@ router
 
 router
   .route('/:id')
-  .get(getBootcamp)
+  .get(advancedResults(Bootcamp, 'courses'), getBootcamp)
   .put(protect, authorize('publisher', 'admin'), updateBootcamp)
   .delete(protect, authorize('publisher', 'admin'), deleteBootcamp);
 
